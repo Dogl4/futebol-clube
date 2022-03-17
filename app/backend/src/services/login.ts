@@ -1,4 +1,6 @@
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import * as fs from 'fs/promises';
 import type { ILogin } from '../interfaces/login';
 import User from '../database/models/user';
 
@@ -16,11 +18,18 @@ class Login {
     }
   }
 
-  static async getUser({ email }: { email: string; }) {
+  static async logIn({ email }: { email: string; }) {
     const user = await User.findOne({
       where: { email }, raw: true, attributes: { exclude: ['password'] },
     });
-    return user;
+
+    const pwt = `${__dirname}/../../jwt.evaluation.key`;
+    const fileKey = await fs.readFile(pwt, 'utf-8');
+
+    const options = { algorithm: 'HS256', expiresIn: '7d' } as jwt.SignOptions;
+    const token = jwt.sign({ user }, fileKey, options);
+
+    return { user, token };
   }
 }
 

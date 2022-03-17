@@ -27,10 +27,9 @@ class LoginController {
   public static async logIn(req: Request, res: Response) {
     const { email } = req.body as ILogin;
 
-    const user = await Login.getUser({ email });
-    console.log('user ==>', user);
+    const user = await Login.logIn({ email });
 
-    res.status(200).json({ message: 'Hello, login' });
+    res.status(200).json(user).end();
   }
 
   routes() {
