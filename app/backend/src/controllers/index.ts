@@ -14,4 +14,6 @@ class IndexController {
   }
 }
 
-export default new IndexController().router;
+const { router } = new IndexController();
+
+export default router;

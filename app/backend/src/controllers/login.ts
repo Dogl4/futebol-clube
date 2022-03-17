@@ -1,4 +1,6 @@
 import { Request, Response, Router } from 'express';
+import Login from '../services';
+import { ILogin } from '../interfaces/login';
 
 class LoginController {
   public router: Router;
@@ -8,7 +10,10 @@ class LoginController {
     this.routes();
   }
 
-  public static async logIn(_req: Request, res: Response) {
+  public static async logIn(req: Request, res: Response) {
+    const redBody: ILogin = req.body;
+    /* const result =  */await Login.verifiLogin(redBody);
+
     res.status(200).json({ message: 'Hello, login' });
   }
 
@@ -17,4 +22,6 @@ class LoginController {
   }
 }
 
-export default new LoginController().routes;
+const { router } = new LoginController();
+
+export default router;
