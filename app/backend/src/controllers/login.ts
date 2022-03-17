@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
+import jwtAuth from '../middlewares/jwtAuth';
 import Login from '../services';
 import { ILogin } from '../interfaces/login';
 
@@ -32,8 +33,19 @@ class LoginController {
     res.status(200).json(user).end();
   }
 
+  public static async roleUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token: string | undefined = req.headers.authorization;
+      const role = await Login.roleUser(token);
+      res.status(200).json(role).end();
+    } catch (error) {
+      next();
+    }
+  }
+
   routes() {
     this.router.post('/', LoginController.verifyData, LoginController.logIn);
+    this.router.post('/validate', jwtAuth, LoginController.roleUser);
   }
 }
 

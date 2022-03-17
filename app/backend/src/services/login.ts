@@ -24,12 +24,26 @@ class Login {
     });
 
     const pwt = `${__dirname}/../../jwt.evaluation.key`;
-    const fileKey = await fs.readFile(pwt, 'utf-8');
+    const jwtKey = await fs.readFile(pwt, 'utf-8');
 
     const options = { algorithm: 'HS256', expiresIn: '7d' } as jwt.SignOptions;
-    const token = jwt.sign({ user }, fileKey, options);
+    const token = jwt.sign({ user }, jwtKey, options);
 
     return { user, token };
+  }
+
+  static async roleUser(token: string | undefined) {
+    try {
+      if (!token) return;
+      const pwt = `${__dirname}/../../jwt.evaluation.key`;
+      const jwtKey = await fs.readFile(pwt, 'utf-8');
+
+      const options = { algorithm: 'HS256' } as jwt.VerifyOptions;
+      const { user } = jwt.verify(token, jwtKey, options) as { user: ILogin };
+      return user.role;
+    } catch (error) {
+      return error;
+    }
   }
 }
 
