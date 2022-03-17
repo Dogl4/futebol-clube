@@ -1,4 +1,5 @@
 import * as express from 'express';
+import routes from './controllers';
 
 class App {
   public app: express.Express;
@@ -7,6 +8,7 @@ class App {
   constructor() {
     // ...
     this.app = express();
+    this.app.use(express.json());
     this.config();
     // ...
   }
@@ -21,6 +23,7 @@ class App {
 
     this.app.use(accessControl);
     // ...
+    this.app.use('/', routes);
   }
 
   // ...
