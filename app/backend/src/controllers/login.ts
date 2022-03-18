@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import jwtAuth from '../middlewares/jwtAuth';
-import Login from '../services';
+import { Login } from '../services';
 import { ILogin } from '../interfaces/login';
 
 export class LoginController {

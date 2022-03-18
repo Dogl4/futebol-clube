@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
+import { Clubs } from '../services';
 
 export class ClubsController {
   public router: Router;
@@ -8,9 +9,10 @@ export class ClubsController {
     this.router.get('/', ClubsController.getClubs);
   }
 
-  public static getClubs(req: Request, res: Response, next: NextFunction) {
+  public static async getClubs(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json({ message: 'Hello Clubs' }).end();
+      const clubs = await Clubs.getAllClubs();
+      res.status(200).json(clubs).end();
     } catch (error) {
       next();
     }

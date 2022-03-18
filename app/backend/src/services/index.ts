@@ -1,3 +1,4 @@
 import Login from './login';
+import Clubs from './clubs';
 
-export default Login;
+export { Login, Clubs };
