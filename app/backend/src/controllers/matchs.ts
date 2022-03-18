@@ -23,8 +23,14 @@ export class MatchsController {
   public static async getMatchInProgress(req: Request, res: Response, next: NextFunction) {
     try {
       const { inProgress } = req.query;
-      console.log('inProgress', inProgress);
-      res.status(200).json({ message: 'Hello Match inProgress' }).end();
+      if (Object.keys(req.query).length) {
+        if (inProgress === 'true') {
+          const matchs = await Matchs.getMatchInProgress();
+          res.status(200).json(matchs).end();
+        }
+        res.status(404).json({ Expected_route: '/matchs?inProgress=true' }).end();
+      }
+      next();
     } catch (error) {
       next();
     }
