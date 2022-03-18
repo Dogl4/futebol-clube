@@ -7,7 +7,7 @@ class Matchs {
       const matchs: Match[] = await Match.findAll({
         attributes: { exclude: ['home_team', 'away_team'] },
         include: [{ model: Club, as: 'awayClub', attributes: ['clubName'] },
-          { model: Club, as: 'homeClub' }] });
+          { model: Club, as: 'homeClub', attributes: ['clubName'] }] });
 
       return matchs;
     } catch (error) {
@@ -16,8 +16,12 @@ class Matchs {
   }
 
   public static async getMatchInProgress() {
-    const inProgress = 1;
-    const matchs = await Match.findAll({ where: { inProgress }, raw: true });
+    const inProgress = true;
+    const matchs = await Match.findAll({
+      where: { inProgress },
+      include: [{ model: Club, as: 'awayClub', attributes: ['clubName'] },
+        { model: Club, as: 'homeClub', attributes: ['clubName'] }],
+    });
     return matchs;
   }
 }
