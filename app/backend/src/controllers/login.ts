@@ -8,7 +8,8 @@ class LoginController {
 
   constructor() {
     this.router = Router();
-    this.routes();
+    this.router.post('/', LoginController.verifyData, LoginController.logIn);
+    this.router.get('/validate', jwtAuth, LoginController.roleUser);
   }
 
   public static async verifyData(req: Request, res: Response, next: NextFunction) {
@@ -45,11 +46,6 @@ class LoginController {
     } catch (error) {
       next();
     }
-  }
-
-  routes() {
-    this.router.post('/', LoginController.verifyData, LoginController.logIn);
-    this.router.post('/validate', jwtAuth, LoginController.roleUser);
   }
 }
 

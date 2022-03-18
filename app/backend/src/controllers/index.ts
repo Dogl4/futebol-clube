@@ -6,10 +6,6 @@ class IndexController {
 
   constructor() {
     this.router = Router();
-    this.routes();
-  }
-
-  routes() {
     this.router.use('/login', loginController);
   }
 }
