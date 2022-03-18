@@ -13,16 +13,41 @@ class Match extends Model {
 
   public awayTeamGoals: number;
 
-  public inProgress: number;
+  public inProgress: boolean;
 }
 
 Match.init({
-  id: DataTypes.INTEGER,
-  home_team: DataTypes.INTEGER,
-  home_team_goals: DataTypes.INTEGER,
-  away_team: DataTypes.INTEGER,
-  away_team_goals: DataTypes.INTEGER,
-  in_progress: DataTypes.INTEGER,
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  homeTeam: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'home_team',
+  },
+  homeTeamGoals: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'home_team_goals',
+  },
+  awayTeam: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'away_team',
+  },
+  awayTeamGoals: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'away_team_goals',
+  },
+  inProgress: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    field: 'in_progress',
+  },
 }, {
   sequelize: db,
   modelName: 'Matchs',
