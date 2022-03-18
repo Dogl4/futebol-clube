@@ -26,6 +26,12 @@ Match.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     field: 'home_team',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    references: {
+      model: 'clubs',
+      key: 'id',
+    },
   },
   homeTeamGoals: {
     type: DataTypes.INTEGER,
@@ -36,6 +42,12 @@ Match.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     field: 'away_team',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    references: {
+      model: 'clubs',
+      key: 'id',
+    },
   },
   awayTeamGoals: {
     type: DataTypes.INTEGER,
@@ -56,7 +68,7 @@ Match.init({
   timestamps: false,
 });
 
-Match.belongsTo(Club, { foreignKey: 'home_team', as: 'homeTeam' });
-Match.belongsTo(Club, { foreignKey: 'away_team', as: 'awayTeam' });
+Match.belongsTo(Club, { foreignKey: 'homeTeam', as: 'home_team' });
+Match.belongsTo(Club, { foreignKey: 'awayTeam', as: 'away_team' });
 
 export default Match;
