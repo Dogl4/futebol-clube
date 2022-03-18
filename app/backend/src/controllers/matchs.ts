@@ -9,6 +9,7 @@ export class MatchsController {
     // The route inProgress need stay first
     this.router.get('/', MatchsController.getMatchInProgress);
     this.router.get('/', MatchsController.getMatchs);
+    this.router.post('/', MatchsController.createMatch);
   }
 
   public static async getMatchs(req: Request, res: Response, next: NextFunction) {
@@ -31,6 +32,14 @@ export class MatchsController {
         res.status(404).json({ Expected_route: '/matchs?inProgress=true' }).end();
       }
       next();
+    } catch (error) {
+      next();
+    }
+  }
+
+  public static async createMatch(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.status(200).json({ message: 'Hello Match post' }).end();
     } catch (error) {
       next();
     }
