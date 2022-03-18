@@ -3,6 +3,6 @@ export interface ILogin {
   password: string;
 
   id?: number,
-  username?: number,
+  username?: string,
   role?: 'user' | 'admin',
 }

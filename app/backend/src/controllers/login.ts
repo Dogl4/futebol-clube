@@ -3,7 +3,7 @@ import jwtAuth from '../middlewares/jwtAuth';
 import Login from '../services';
 import { ILogin } from '../interfaces/login';
 
-class LoginController {
+export class LoginController {
   public router: Router;
 
   constructor() {
