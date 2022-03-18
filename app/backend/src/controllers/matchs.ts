@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
+import { Matchs } from '../services';
 
 export class MatchsController {
   public router: Router;
@@ -10,7 +11,8 @@ export class MatchsController {
 
   public static async getMatchs(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json({ message: 'Hello Macths' }).end();
+      const matchs = await Matchs.getMatchs();
+      res.status(200).json(matchs).end();
     } catch (error) {
       next();
     }
