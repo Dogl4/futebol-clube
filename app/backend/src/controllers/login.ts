@@ -12,25 +12,29 @@ class LoginController {
   }
 
   public static async verifyData(req: Request, res: Response, next: NextFunction) {
-    const { email, password } = req.body as ILogin;
-    if (!email || !password) {
-      res.status(401).json({ message: 'All fields must be filled' }).end();
+    try {
+      const { email, password } = req.body as ILogin;
+      if (!email || !password) {
+        res.status(401).json({ message: 'All fields must be filled' }).end();
+      }
+      const error = await Login.verifyPassword({ email, password });
+      if (error || !/\S+@\S+\.\S+/.test(email)) {
+        res.status(401).json({ message: 'Incorrect email or password' }).end();
+      }
+      next();
+    } catch (error) {
+      next();
     }
-
-    const error = await Login.verifyPassword({ email, password });
-    if (error || !/\S+@\S+\.\S+/.test(email)) {
-      res.status(401).json({ message: 'Incorrect email or password' }).end();
-    }
-
-    next();
   }
 
   public static async logIn(req: Request, res: Response) {
-    const { email } = req.body as ILogin;
-
-    const user = await Login.logIn({ email });
-
-    res.status(200).json(user).end();
+    try {
+      const { email } = req.body as ILogin;
+      const user = await Login.logIn({ email });
+      res.status(200).json(user).end();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public static async roleUser(req: Request, res: Response, next: NextFunction) {
