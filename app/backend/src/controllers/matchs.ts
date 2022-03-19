@@ -11,6 +11,7 @@ export class MatchsController {
     this.router.get('/', MatchsController.getMatchInProgress);
     this.router.get('/', MatchsController.getMatchs);
     this.router.post('/', jwtAuth, MatchsController.createMatch);
+    this.router.patch('/:id/finish', jwtAuth, MatchsController.finishMatch);
   }
 
   public static async getMatchs(req: Request, res: Response, next: NextFunction) {
@@ -51,6 +52,16 @@ export class MatchsController {
         return res.status(401).json({ message: 'There is no team with such id!' }).end();
       }
       return res.status(201).json(match).end();
+    } catch (error) {
+      next();
+    }
+  }
+
+  public static async finishMatch(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      console.log(id);
+      return res.status(200).json({ message: 'Finish' }).end();
     } catch (error) {
       next();
     }
