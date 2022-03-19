@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
+import jwtAuth from '../middlewares/jwtAuth';
 import { Matchs } from '../services';
 
 export class MatchsController {
@@ -9,7 +10,7 @@ export class MatchsController {
     // The route inProgress need stay first
     this.router.get('/', MatchsController.getMatchInProgress);
     this.router.get('/', MatchsController.getMatchs);
-    this.router.post('/', MatchsController.createMatch);
+    this.router.post('/', jwtAuth, MatchsController.createMatch);
   }
 
   public static async getMatchs(req: Request, res: Response, next: NextFunction) {
@@ -39,11 +40,17 @@ export class MatchsController {
 
   public static async createMatch(req: Request, res: Response, next: NextFunction) {
     try {
-      const match = await Matchs.createMatch(req.body);
-      if (match) {
-        return res.status(200).json(match).end();
+      const { homeTeam, awayTeam } = req.body;
+      if (homeTeam === awayTeam) {
+        res.status(401)
+          .json({ message: 'It is not possible to create a match with two equal teams' }).end();
       }
-      return res.status(401).json({ message: 'There is no team with such id!' }).end();
+
+      const match = await Matchs.createMatch(req.body);
+      if (!match) {
+        return res.status(401).json({ message: 'There is no team with such id!' }).end();
+      }
+      return res.status(201).json(match).end();
     } catch (error) {
       next();
     }
