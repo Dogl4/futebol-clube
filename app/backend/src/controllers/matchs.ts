@@ -39,7 +39,11 @@ export class MatchsController {
 
   public static async createMatch(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json({ message: 'Hello Match post' }).end();
+      const match = await Matchs.createMatch(req.body);
+      if (match) {
+        return res.status(200).json(match).end();
+      }
+      return res.status(401).json({ message: 'There is no team with such id!' }).end();
     } catch (error) {
       next();
     }
