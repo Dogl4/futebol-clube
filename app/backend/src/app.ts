@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as cors from 'cors';
 import routes from './controllers';
 
 class App {
@@ -9,6 +10,7 @@ class App {
     // ...
     this.app = express();
     this.app.use(express.json());
+    this.app.use(cors());
     this.config();
     // ...
   }
@@ -29,7 +31,6 @@ class App {
   // ...
   public start(PORT: string | number): void {
     // ...
-    this.app.use(express.json());
     this.app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   }
 }
