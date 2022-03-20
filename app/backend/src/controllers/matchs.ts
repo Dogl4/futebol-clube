@@ -60,8 +60,11 @@ export class MatchsController {
   public static async finishMatch(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      console.log(id);
-      return res.status(200).json({ message: 'Finish' }).end();
+      const result = await Matchs.finishMatch(+id);
+      if (result) {
+        res.status(200).json({ message: 'Finish' }).end();
+      }
+      res.status(404).json({ message: 'Match not found or not in progress' }).end();
     } catch (error) {
       next();
     }

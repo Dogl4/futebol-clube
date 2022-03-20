@@ -55,6 +55,20 @@ class Matchs {
       console.log('Error', error);
     }
   }
+
+  public static async finishMatch(id: number) {
+    try {
+      const newId = id === 0 ? 1 : id;
+      const match = await Match.findOne({ where: { id: newId, inProgress: true } });
+      if (match) {
+        await Match.update({ inProgress: false }, { where: { id: newId } });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log('Error', error);
+    }
+  }
 }
 
 export default Matchs;
