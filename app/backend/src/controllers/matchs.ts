@@ -12,6 +12,7 @@ export class MatchsController {
     this.router.get('/', MatchsController.getMatchs);
     this.router.post('/', jwtAuth, MatchsController.createMatch);
     this.router.patch('/:id/finish', jwtAuth, MatchsController.finishMatch);
+    this.router.patch('/:id', jwtAuth, MatchsController.updateMatch);
   }
 
   public static async getMatchs(req: Request, res: Response, next: NextFunction) {
@@ -63,6 +64,19 @@ export class MatchsController {
       const result = await Matchs.finishMatch(+id);
       if (result) {
         res.status(200).json({ message: 'Finish' }).end();
+      }
+      res.status(404).json({ message: 'Match not found or not in progress' }).end();
+    } catch (error) {
+      next();
+    }
+  }
+
+  public static async updateMatch(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const match = await Matchs.updateMatch(+id, req.body);
+      if (match) {
+        res.status(200).json({ message: 'Match updated' }).end();
       }
       res.status(404).json({ message: 'Match not found or not in progress' }).end();
     } catch (error) {

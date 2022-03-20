@@ -69,6 +69,22 @@ class Matchs {
       console.log('Error', error);
     }
   }
+
+  public static async updateMatch(id: number, match: IMatch) {
+    try {
+      const newId = id === 0 ? 1 : id;
+      const matchInDatabase = await Match.findOne({ where: { id: newId, inProgress: true } });
+      if (matchInDatabase) {
+        const { homeTeamGoals, awayTeamGoals, inProgress } = match;
+        const result = await Match
+          .update({ homeTeamGoals, awayTeamGoals, inProgress }, { where: { id: newId } });
+        return result;
+      }
+      return null;
+    } catch (error) {
+      console.log('Error', error);
+    }
+  }
 }
 
 export default Matchs;
