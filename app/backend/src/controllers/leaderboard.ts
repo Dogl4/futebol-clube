@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import { Leaderboard as LeaderboardService } from '../services';
 
 class Leaderboard {
   public router: Router;
@@ -8,8 +9,9 @@ class Leaderboard {
     this.router.get('/home', Leaderboard.home);
   }
 
-  public static home(req: Request, res: Response) {
-    res.send('Welcome to the leaderboard');
+  public static async home(req: Request, res: Response) {
+    const result = await LeaderboardService.matchInHome();
+    res.status(200).json(result).end();
   }
 }
 
