@@ -34,44 +34,36 @@ interface Iacc1 {
 
 class Leaderboard {
   public static pointCalculation(acc: Iacc2, { homeTeamGoals, awayTeamGoals }:
-  { homeTeamGoals: number, awayTeamGoals: number }) {
+  { homeTeamGoals: number, awayTeamGoals: number }, team: 'homeTeam' | 'awayTeam') {
+    const first = team === 'homeTeam' ? homeTeamGoals : awayTeamGoals;
+    const second = team === 'homeTeam' ? awayTeamGoals : homeTeamGoals;
     const goals = {
-      goalsFavor: acc.goalsFavor += homeTeamGoals, goalsOwn: acc.goalsOwn += awayTeamGoals };
-    if (homeTeamGoals > awayTeamGoals) {
-      acc.totalPoints += 3;
-      acc.totalVictories += 1;
-    }
-    if (homeTeamGoals < awayTeamGoals) {
-      acc.totalPoints += 0;
-      acc.totalLosses += 1;
-    }
-    if (homeTeamGoals === awayTeamGoals) {
-      acc.totalPoints += 1;
-      acc.totalDraws += 1;
-    }
+      goalsFavor: acc.goalsFavor += first, goalsOwn: acc.goalsOwn += second };
+    if (first > second) { acc.totalPoints += 3; acc.totalVictories += 1; }
+    if (first < second) { acc.totalPoints += 0; acc.totalLosses += 1; }
+    if (homeTeamGoals === awayTeamGoals) { acc.totalPoints += 1; acc.totalDraws += 1; }
     return { ...acc, ...goals };
   }
 
-  public static newObjectFormated(array: Club[]) {
-    const newArray = array
-      .map(({ clubName, homeTeam }: any) => {
-        const moreInfo = { totalPoints: 0,
-          totalVictories: 0,
-          totalDraws: 0,
-          totalLosses: 0,
-          goalsFavor: 0,
-          goalsOwn: 0 };
+  public static newObjectFormated(array: Club[], type: 'homeTeam' | 'awayTeam') {
+    const team = type === 'homeTeam' ? 'homeTeam' : 'awayTeam';
+    return array.map(({ clubName, [team]: club }: any) => {
+      const moreInfo = { totalPoints: 0,
+        totalVictories: 0,
+        totalDraws: 0,
+        totalLosses: 0,
+        goalsFavor: 0,
+        goalsOwn: 0 };
 
-        const newMoreInfo = homeTeam
-          .reduce((acc: Iacc2, e: Iacc3) => Leaderboard.pointCalculation(acc, e), moreInfo);
-        return { name: clubName,
-          ...newMoreInfo,
-          totalGames: homeTeam.length,
-          goalsBalance: newMoreInfo.goalsFavor - newMoreInfo.goalsOwn,
-          efficiency: (Math
-            .round((newMoreInfo.totalPoints / (homeTeam.length * 3)) * 10000) / 100) };
-      });
-    return newArray;
+      const newMoreInfo = club
+        .reduce((acc: Iacc2, e: Iacc3) => Leaderboard.pointCalculation(acc, e, team), moreInfo);
+      return { name: clubName,
+        ...newMoreInfo,
+        totalGames: club.length,
+        goalsBalance: newMoreInfo.goalsFavor - newMoreInfo.goalsOwn,
+        efficiency: (Math
+          .round((newMoreInfo.totalPoints / (club.length * 3)) * 10000) / 100) };
+    });
   }
 
   public static async sortLeardboard(array: Iacc1[]) {
@@ -96,7 +88,20 @@ class Leaderboard {
       ],
     });
 
-    const clubsLeaderboard = Leaderboard.newObjectFormated(clubs);
+    const clubsLeaderboard = Leaderboard.newObjectFormated(clubs, 'homeTeam');
+    return Leaderboard.sortLeardboard(clubsLeaderboard);
+  }
+
+  public static async matchInAway() {
+    const clubs = await Club.findAll({
+      include: [
+        { model: Match,
+          as: 'awayTeam',
+          where: { inProgress: false },
+          attributes: { exclude: ['home_team', 'away_team'] } },
+      ],
+    });
+    const clubsLeaderboard = Leaderboard.newObjectFormated(clubs, 'awayTeam');
     return Leaderboard.sortLeardboard(clubsLeaderboard);
   }
 }
