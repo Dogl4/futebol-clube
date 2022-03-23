@@ -104,6 +104,25 @@ class Leaderboard {
     const clubsLeaderboard = Leaderboard.newObjectFormated(clubs, 'awayTeam');
     return Leaderboard.sortLeardboard(clubsLeaderboard);
   }
+
+  public static async all() {
+    const [home, away] = await Promise.all([Leaderboard.matchInHome(), Leaderboard.matchInAway()]);
+    const currentObject = (e: Iacc1) => away.filter((e2) => e2.name === e.name);
+    const newObject = home.map((e) => ({
+      name: e.name,
+      totalPoints: (e.totalPoints + (currentObject(e)[0].totalPoints)),
+      totalVictories: e.totalVictories + (currentObject(e)[0].totalVictories),
+      totalDraws: e.totalDraws + (currentObject(e)[0].totalDraws),
+      totalLosses: e.totalLosses + (currentObject(e)[0].totalLosses),
+      goalsFavor: e.goalsFavor + (currentObject(e)[0].goalsFavor),
+      goalsOwn: e.goalsOwn + (currentObject(e)[0].goalsOwn),
+      totalGames: e.totalGames + (currentObject(e)[0].totalGames),
+      goalsBalance: e.goalsBalance + (currentObject(e)[0].goalsBalance),
+      efficiency: (Math.round(((e.totalPoints + (currentObject(e)[0].totalPoints))
+         / ((e.totalGames + (currentObject(e)[0].totalGames)) * 3)) * 10000) / 100),
+    }));
+    return Leaderboard.sortLeardboard(newObject);
+  }
 }
 
 export default Leaderboard;

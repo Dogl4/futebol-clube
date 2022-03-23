@@ -8,6 +8,7 @@ class Leaderboard {
     this.router = Router();
     this.router.get('/home', Leaderboard.home);
     this.router.get('/away', Leaderboard.away);
+    this.router.get('/', Leaderboard.all);
   }
 
   public static async home(req: Request, res: Response) {
@@ -17,6 +18,11 @@ class Leaderboard {
 
   public static async away(req: Request, res: Response) {
     const result = await LeaderboardService.matchInAway();
+    res.status(200).json(result).end();
+  }
+
+  public static async all(req: Request, res: Response) {
+    const result = await LeaderboardService.all();
     res.status(200).json(result).end();
   }
 }
