@@ -2,11 +2,9 @@
 # Trybe-Futebol-Clube | SiteFullStack
 
 ## 📷 Screenshot
-[![Screenshot](./trybe-futebol-club.gif "Screenshot")](./trybe-futebol-club.gif "Screenshot")
- <div align=center>
-</br>
-    <img height="156em" src="./trybe-futebol-club.gif"/>
-    <img height="156em" src="./trybe-futebol-club-frontend.gif"/>
+ <div align=left>
+    <img height="256em" src="./trybe-futebol-club.gif"/>
+    <img height="260em" src="./trybe-futebol-club-frontend.gif"/>
   </div>
 
 ## 📋 Descrição do projeto
