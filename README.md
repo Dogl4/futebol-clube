@@ -3,6 +3,11 @@
 
 ## 📷 Screenshot
 [![Screenshot](./trybe-futebol-club.gif "Screenshot")](./trybe-futebol-club.gif "Screenshot")
+ <div align=center>
+</br>
+    <img height="156em" src="./trybe-futebol-club.gif"/>
+    <img height="156em" src="./trybe-futebol-club-frontend.gif"/>
+  </div>
 
 ## 📋 Descrição do projeto
 Um site de gerenciamento e acompanhamento das partidas de futebol. Com a versão de usuário e administrador. Uma aplicação full-stack, que vai deste a criação e gerenciamento de uma API, ligada ao banco de dados, até a parte final para o usuário.
