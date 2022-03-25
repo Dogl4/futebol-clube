@@ -14,7 +14,7 @@ Um site de gerenciamento e acompanhamento das partidas de futebol. Com a versão
 - Docker (Servidores rodam via Container)
 - Mocha/Chai/Sinon (Testes de integração)
 
-## Endpoints
+## :balloon: Endpoints
 - POST - `/login`
 - GET - `/login/validade`
 - GET - `/clubs`
