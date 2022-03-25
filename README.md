@@ -1,5 +1,5 @@
 
-# Trybe-Futebol Clube | SiteFullStack
+# Trybe-Futebol-Clube | SiteFullStack
 
 ## 📷 Screenshot
 [![Screenshot](./trybe-futebol-club.gif "Screenshot")](./trybe-futebol-club.gif "Screenshot")
